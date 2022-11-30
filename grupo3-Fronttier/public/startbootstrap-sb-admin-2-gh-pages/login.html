@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Fronttier | Login</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+</head>
+
+<body class="bg-gray-800">
+
+    <div class="container">
+
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+
+            <div class="col-xl-10 col-lg-12 col-md-9">
+
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <!-- Nested Row within Card Body -->
+                        <div class="row">
+                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                            <div class="col-lg-6">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="h4 text-gray-900 mb-4">Bem-Vindo de volta!</h1>
+                                    </div>
+                                    <div class="user">
+
+                                        <div class="form-group">
+                                            <input type="" class="form-control form-control-user" id="nomeEmp_input"
+                                                aria-describedby="emailHelp"
+                                                placeholder="Insira o nome de sua empresa!">
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <input type="email" class="form-control form-control-user" id="email_input"
+                                                aria-describedby="emailHelp" placeholder="Insira seu e-mail">
+                                        </div>
+                                        <!-- <div class="form-group">
+                                            <input type="text" class="form-control form-control-user"
+                                                id="codigoSeguranca" aria-describedby="emailHelp"
+                                                placeholder="Código de segurança">
+                                        </div> -->
+                                        <div class="form-group">
+                                            <input type="password" class="form-control form-control-user"
+                                                id="senha_input" placeholder="Senha">
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="custom-control custom-checkbox small">
+                                                <input type="checkbox" class="custom-control-input" id="customCheck">
+                                                <label class="custom-control-label" for="customCheck">Mantenha-me
+                                                    conectado
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <a class="btn btn-primary btn-user btn-block" id="login_btn" onclick="entrar()">
+                                            Entrar
+                                        </a>
+                                        <hr>
+                                        <!-- <a href="index.html" class="btn btn-google btn-user btn-block">
+                                            <i class="fab fa-google fa-fw"></i> Entrar com Google
+                                        </a> -->
+                                        <a href="../index.html" class="btn btn-user btn-block">
+                                            Cancelar
+                                        </a>
+                                    </div>
+                                    <hr>
+                                    <div class="text-center">
+                                        <a class="small" href="forgot-password.html">Esqueceu sua senha?</a>
+                                    </div>
+                                    <div class="text-center">
+                                        <a class="small" href="register.html">Criar uma conta!</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal-containerL" id="modal_container">
+        <div class="modalL">
+            <h2 id="titulo_m"></h2>
+            <p id="p_msg"></p>
+        </div>
+        <button class="button1L" id="close">X</button>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+
+</body>
+
+</html>
+
+<script>
+
+    function entrar() {
+
+        const open = document.getElementById('open');
+        const modal_container = document.getElementById('modal_container');
+        const close = document.getElementById('close');
+
+        var nomeVar = document.getElementById("nomeEmp_input").value;
+        var emailVar = document.getElementById('email_input').value;
+        var senhaVar = document.getElementById('senha_input').value;
+
+
+        if (nomeVar == "" || emailVar == "" || senhaVar == "") {
+
+            titulo_m.innerHTML = `Preencha todos os campos para prosseguir.`
+
+
+            modal_container.classList.add('show');
+
+
+            close.addEventListener('click', () => {
+                modal_container.classList.remove('show');
+            });
+            return false;
+        }
+
+        console.log("FORM LOGIN: ", emailVar);
+        console.log("FORM SENHA: ", senhaVar);
+
+        fetch("/usuarios/autenticar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                nomeEmpServer: nomeVar,
+                emailServer: emailVar,
+                senhaServer: senhaVar
+
+            })
+
+        }).then(function (resposta) {
+            console.log("ESTOU NO THEN DO entrar()!")
+
+            if (resposta.ok) {
+                console.log(resposta);
+
+                resposta.json().then(json => {
+                    console.log("OBJ", json);
+                    console.log(JSON.stringify(json));
+
+                    sessionStorage.EMAIL_USUARIO = json.email;
+                    sessionStorage.NOME_USUARIO = json.nome;
+                    sessionStorage.COD_EMPRESA = json.fkCodEmpresa;
+                    sessionStorage.permissaoUser = json.fkPermissao
+                    permissao = sessionStorage.permissaoUser = json.fkPermissao
+                    sessionStorage.nomeEmp = json.nomeEmpresa
+
+                    titulo_m.innerHTML = `Login realizado com sucesso!`
+
+
+                    modal_container.classList.add('show');
+
+
+                    close.addEventListener('click', () => {
+                        modal_container.classList.remove('show');
+                    });
+
+                    if (sessionStorage.permissaoUser == 1) {
+                        setTimeout(function () {
+                            sessionStorage.EMAIL_USUARIO = json.email;
+                            window.location = "index_dash.html";
+                        }, 2000); // apenas para exibir o loading
+                    }
+
+                    if (sessionStorage.permissaoUser == 2) {
+                        setTimeout(function () {
+
+
+                            window.location = "telaDashUser.html";
+                        }, 2000);
+                    }
+
+
+                    if (sessionStorage.permissaoUser == 3 && sessionStorage.COD_EMPRESA == 1000) {
+                        setTimeout(function () {
+
+                            window.location = "telaCadastroTec.html";
+                        }, 2000);
+
+
+                    } else if (sessionStorage.permissaoUser == 3 && sessionStorage.COD_EMPRESA != 'null') {
+
+                        setTimeout(function () {
+                            window.location = "front_dash.html"
+                        }, 2000);
+
+                        /* sessionStorage.nomeEmp = json.nomeEmpresa
+                                       
+                        fetch("/usuarios/nomeEmpresa", {
+                            method: "POST",
+                            headers: {
+                              "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                              fkcodEmpresaServer: sessionStorage.COD_EMPRESA,
+                            })
+                          }).then(function (resposta) {
+                            console.log("ESTOU NO THEN DO entrar()!")
+            
+                            if (resposta.ok) {
+                              console.log(resposta);
+            
+                              resposta.json().then(json => {
+                                console.log(json);
+                                console.log(JSON.stringify(json));
+                                
+                                sessionStorage.nomeEmp = json.nomeEmpresa
+                                
+                                
+                                setTimeout(function () {
+                                  window.location = "front_dash.html"
+                                }, 2000); // apenas para exibir o loading
+                              });
+                            
+                        
+                            }
+
+
+                });
+                */
+                    }
+
+                }).catch(function (erro) {
+                    console.log(erro);
+                })
+
+            } else {
+
+                titulo_m.innerHTML = `Email ou senha inválidos!`
+
+
+                modal_container.classList.add('show');
+
+
+                close.addEventListener('click', () => {
+                    modal_container.classList.remove('show');
+                });
+            }
+
+        }).catch(function (erro) {
+            console.log(erro);
+        })
+
+
+        return false;
+
+    }
+
+</script>

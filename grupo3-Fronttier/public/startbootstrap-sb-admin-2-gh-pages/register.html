@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Fronttier | Cadastro</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+</head>
+
+<body class="bg-gray-600">
+
+    <div class="container">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                    <div class="col-lg-7">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4">Cadastre sua empresa!</h1>
+                            </div>
+                            <div class="user">
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <span class="teste23">Nome da empresa</span>
+                                        <input type="text" class="form-control form-control-user" id="nomeEmpresa"
+                                            placeholder="Acquatec" maxlength="45">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <span>CNPJ</span>
+                                        <input type="text" class="form-control form-control-user" id="cnpjEmpresa"
+                                            placeholder="00.000.000/0000-22" maxlength="18">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-sm-6">
+                                        <span class="teste23">Digite um código de segurança</span>
+                                        <input type="password" class="form-control form-control-user" id="codigoEmpresa"
+                                            placeholder="****" maxlength="4">
+                                    </div>
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <span class="teste23">Escolha um plano</span>
+                                        <select id="fkPlano" class="aa">
+                                            <option value="1">Gold</option>
+                                            <option value="2">Platinum</option>
+                                            <option value="3">Diamond</option>
+                                    </select>
+                                    </div>
+                                    <!-- <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <span class="teste23">Email</span>
+                                        <input type="text" class="form-control form-control-user" id="i_email"
+                                            placeholder="example@sp.com">
+                                    </div> -->
+                                </div>                                
+
+                                <!-- <div class="form-group row">
+                                    <div class="col-sm-6">
+                                        <span class="teste23">Senha</span>
+                                        <input type="password" class="form-control form-control-user"
+                                            id="i_senha" placeholder="">
+                                    </div>
+                                </div> -->
+                                <a class="btn btn-primary btn-user btn-block" onclick="cadastrar()">
+                                    Cadastrar
+                                </a>
+                                <!-- <a href="index.html" class="btn btn-google btn-user btn-block">
+                                    <i class="fab fa-google fa-fw"></i> Cadastre-se com Google
+                                </a>
+                                <a href="index.html" class="btn btn-facebook btn-user btn-block">
+                                    <i class="fab fa-facebook-f fa-fw"></i> Cadastre-se com Facebook
+                                </a> -->
+                            </div>
+                            <hr>
+                            <div class="text-center">
+                                <a class="small" href="forgot-password.html">Esqueci minha senha.</a>
+                            </div>
+                            <div class="text-center">
+                                <a class="small" href="login.html">Já tem uma conta? Login!</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal-containerL" id="modal_container">
+        <div class="modalL">
+            <h2 id="titulo_m"></h2>
+            <p id="p_msg"></p>
+        </div>
+        <button class="button1L" id="close">X</button>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script> 
+    <script src="js/funcoes.js"></script>
+
+</body> 
+<script>
+
+    function cadastrar() {
+
+        const open = document.getElementById('open');
+        const modal_container = document.getElementById('modal_container');
+        const close = document.getElementById('close');
+
+        //Recupere o valor da nova input pelo nome do id
+        // Agora vá para o método fetch logo abaixo
+        var nomeEmpresaVar = document.getElementById('nomeEmpresa').value;
+        var cnpjVar = document.getElementById('cnpjEmpresa').value;
+       // var emailVar = document.getElementById('i_email').value;
+        var codigoEmpresaVar= document.getElementById('codigoEmpresa').value;
+       // var senhaVar = document.getElementById('i_senha').value;
+        var plano = document.getElementById('fkPlano').value;
+
+        if (nomeEmpresaVar == "" || cnpjVar == "" || plano == "") {           
+
+            titulo_m.innerHTML = `Preencha todos os campos para prosseguir.`
+
+
+            modal_container.classList.add('show');
+
+
+            close.addEventListener('click', () => {
+                modal_container.classList.remove('show');
+            });
+            return false;
+        }
+    /* else {
+            setInterval(sumirMensagem, 5000)
+        } */
+
+        // Enviando o valor da nova input
+        fetch("/usuarios/cadastrar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                // crie um atributo que recebe o valor recuperado aqui
+                // Agora vá para o arquivo routes/usuario.js
+                nomeEmpresaServer:nomeEmpresaVar,
+                cnpjServer: cnpjVar,
+                codigoServer: codigoEmpresaVar,
+                fkPlanoServer: plano
+
+            })
+        }).then(function (resposta) {
+
+            console.log("resposta: ", resposta);
+
+            if (resposta.ok) {
+                // card_erro.style.display = "block";
+
+                titulo_m.innerHTML = `Empresa cadastrada com sucesso!`
+
+
+                modal_container.classList.add('show');
+
+
+                close.addEventListener('click', () => {
+                    modal_container.classList.remove('show');
+                });
+
+                setTimeout(() => {
+
+                    window.location = "cadastrarUsuario.html";
+                }, "1000")
+
+            } else {
+                titulo_m.innerHTML = `O código da empresa já existe!`
+
+
+                modal_container.classList.add('show');
+
+
+                close.addEventListener('click', () => {
+                    modal_container.classList.remove('show');
+                });
+            }
+        }).catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+            finalizarAguardar();
+        });
+
+        return false;
+    }
+
+</script>
+</html>
